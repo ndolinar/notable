@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "allowJs": true,
+    "noImplicitAny": true,
+    "noEmitOnError": true,
+    "jsx": "react",
+    "noImplicitReturns": true,
+    "rootDir": "src",
+    "target": "es6",
+    "module": "esnext",
+    "noImplicitThis": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "compileOnSave": true,
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
