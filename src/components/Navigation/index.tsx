@@ -5,6 +5,13 @@ import { NavLink } from 'react-router-dom';
 import { classDecorator } from '../../utils';
 const cn = classDecorator('navigation');
 
+const routes = [
+  { path: '/create', name: 'CreaRRte', icon: 'pencil' },
+  { path: '/search', name: 'Search', icon: 'search' },
+  { path: '/calendar', name: 'Calendar', icon: 'calendar' },
+  { path: '/account', name: 'User', icon: 'user' },
+];
+
 export const Navigation = () => {
   return (
     <div className={cn()}>
@@ -17,30 +24,14 @@ export const Navigation = () => {
           </div>
         </div>
         <div className={cn('menu', 'is-right')}>
-          <div className={cn('menu-item')}>
-            <NavLink className={cn('link')} to="/create">
-              <div className={cn('link-title')}>Create</div>
-              <i className={cn('link-icon', 'fa fa-pencil')}></i>
-            </NavLink>
-          </div>
-          <div className={cn('menu-item')}>
-            <NavLink className={cn('link')} to="/search">
-              <div className={cn('link-title')}>Search</div>
-              <i className={cn('link-icon', 'fa fa-search')}></i>
-            </NavLink>
-          </div>
-          <div className={cn('menu-item')}>
-            <NavLink className={cn('link')} to="/calendar">
-              <div className={cn('link-title')}>Calendar</div>
-              <i className={cn('link-icon', 'fa fa-calendar')}></i>
-            </NavLink>
-          </div>
-          <div className={cn('menu-item')}>
-            <NavLink className={cn('link')} to="/account">
-              <div className={cn('link-title')}>User</div>
-              <i className={cn('link-icon', 'fa fa-user')}></i>
-            </NavLink>
-          </div>
+          {routes.map(route => (
+            <div key={route.name} className={cn('menu-item')}>
+              <NavLink className={cn('link')} to={route.path}>
+                <div className={cn('link-title')}>{route.name}</div>
+                <i className={cn('link-icon', `fa fa-${route.icon}`)}></i>
+              </NavLink>
+            </div>
+          ))}
         </div>
       </div>
     </div>
