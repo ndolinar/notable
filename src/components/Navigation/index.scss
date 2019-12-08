@@ -28,12 +28,6 @@
       color: #000;
     }
   }
-  &-link.is-logo {
-    font-size: 34px;
-    color: #000;
-    padding: 10px;
-    background: none;
-  }
   &-link.active {
     padding: 8px 12px;
     background: #eee;
@@ -49,6 +43,12 @@
     .navigation-link-icon {
       color: #000;
     }
+  }
+  &-link.is-logo {
+    font-size: 34px;
+    color: #000;
+    padding: 10px;
+    background: none;
   }
   &-link-title {
     color: #666;
