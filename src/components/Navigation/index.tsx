@@ -6,7 +6,7 @@ import { classDecorator } from '../../utils';
 const cn = classDecorator('navigation');
 
 const routes = [
-  { path: '/create', name: 'CreaRRte', icon: 'pencil' },
+  { path: '/create', name: 'Create', icon: 'pencil' },
   { path: '/search', name: 'Search', icon: 'search' },
   { path: '/calendar', name: 'Calendar', icon: 'calendar' },
   { path: '/account', name: 'User', icon: 'user' },
