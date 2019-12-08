@@ -10,52 +10,52 @@ module.exports = {
     filename: '[name].bundle.js',
     chunkFilename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    publicPath: '/',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
     alias: {
-      src: path.resolve(__dirname, 'src')
+      src: path.resolve(__dirname, 'src'),
     },
-    mainFiles: ['index']
+    mainFiles: ['index'],
   },
   devtool: 'inline-source-map',
   module: {
     rules: [
-      // { test: /\.tsx?$/, exclude: /node_modules/, use: 'ts-loader' },
-      {
-        test: /\.ts(x?)$/,
-        exclude: /node_modules/,
-        use: [
-          'babel-loader',
-          {
-            loader: 'ts-loader'
-          }
-        ]
-      },
+      { test: /\.tsx?$/, exclude: /node_modules/, use: 'ts-loader' },
+      // {
+      //   test: /\.ts(x?)$/,
+      //   exclude: /node_modules/,
+      //   use: [
+      //     'babel-loader',
+      //     {
+      //       loader: 'ts-loader',
+      //     },
+      //   ],
+      // },
       { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader' },
       {
         test: /\.s?css$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(png|jpe?g|svg|gif)$/,
-        loader: 'file-loader'
-      }
-    ]
+        loader: 'file-loader',
+      },
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       title: 'RWP App',
       template: './index.html',
-      filename: './index.html'
+      filename: './index.html',
       // appMountId: 'root'
-    })
+    }),
   ],
   devServer: {
     contentBase: './dist',
     disableHostCheck: true,
-    historyApiFallback: true
-  }
+    historyApiFallback: true,
+  },
 };
