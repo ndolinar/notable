@@ -1,11 +1,11 @@
 {
-  "name": "rwp",
+  "name": "notable",
   "version": "1.0.0",
   "description": "",
   "private": true,
   "scripts": {
     "watch": "webpack --watch",
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --progress",
     "build": "webpack"
   },
   "keywords": [],

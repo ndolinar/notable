@@ -47,7 +47,6 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: 'RWP App',
       template: './index.html',
       filename: './index.html',
       // appMountId: 'root'
