@@ -16,7 +16,8 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
     alias: {
       src: path.resolve(__dirname, 'src')
-    }
+    },
+    mainFiles: ['index']
   },
   devtool: 'inline-source-map',
   module: {

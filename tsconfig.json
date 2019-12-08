@@ -9,9 +9,11 @@
     "rootDir": "src",
     "target": "es6",
     "module": "esnext",
+    "moduleResolution": "node",
     "noImplicitThis": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "lib": ["es7", "dom"]
   },
   "compileOnSave": true,
   "include": ["src/**/*"],
