@@ -6,7 +6,7 @@ const cn = classDecorator('page');
 
 export const AccountPage = () => {
   return (
-    <div className={cn()}>
+    <div className={cn('', 'is-account')}>
       <div className={cn('navigation')}>
         <div className={cn('navigation-item')}>
           <NavLink className={cn('navigation-link')} exact to="/account">

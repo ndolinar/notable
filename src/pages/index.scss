@@ -1,6 +1,9 @@
 .page {
-  background: #fafafa;
   flex: 1;
+
+  &.is-account {
+    background: #fafafa;
+  }
 
   h1 {
     margin: 0;

@@ -16,8 +16,9 @@ const classDecorator = (cn: string) => (
 
   if (!sc) {
     if (rest) {
-      return typeof rest === 'string' ? rest : rest.join(' ');
+      return cn + ' ' + (typeof rest === 'string' ? rest : rest.join(' '));
     }
+
     return cn;
   }
 
