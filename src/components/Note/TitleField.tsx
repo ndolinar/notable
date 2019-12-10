@@ -22,7 +22,7 @@ export const Title: React.FC<Props> = ({ value, onChange, error }) => {
         placeholder="Untitled"
         onChange={onChange}
       />
-      {error && <div className="error">{error}</div>}
+      {error && <div className={cn('error')}>{error}</div>}
     </div>
   );
 };

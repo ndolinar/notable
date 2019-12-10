@@ -1,8 +1,8 @@
 import { combineReducers, Reducer } from 'redux';
 import { NoteState } from './note/noteTypes';
+import { CategoriesState } from './categories/categoriesTypes';
 import noteReducer from './note/noteReducer';
 import categoriesReducer from './categories/categoriesReducer';
-import { CategoriesState } from './categories/categoriesTypes';
 
 export interface State {
   note: NoteState;
