@@ -1,0 +1,14 @@
+.note-title {
+  input {
+    background: transparent;
+    font-size: 30px;
+    display: block;
+    width: 100%;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #eee;
+    &::placeholder {
+      color: #aaa;
+    }
+  }
+}

@@ -1,0 +1,43 @@
+.categories {
+  min-width: 320px;
+  max-width: calc(100vw - 24px);
+  &-wrap {
+    display: flex;
+    min-height: 35px;
+    border: 1px solid #eee;
+    padding: 5px;
+    &:hover,
+    &.nvm-active {
+      background: #fafafa;
+    }
+
+    &.nvm-disabled {
+      cursor: pointer;
+    }
+  }
+  &-container {
+    display: flex;
+    flex-wrap: wrap;
+    &.nvm-disabled {
+      pointer-events: none;
+    }
+  }
+  &-placeholder {
+    color: #999;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+  }
+  &-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 14px;
+    display: flex;
+    cursor: pointer;
+    &.nvm-hidden {
+      display: none;
+    }
+  }
+}

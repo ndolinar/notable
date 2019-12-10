@@ -1,0 +1,33 @@
+.categories-dropdown {
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #eee;
+  &-help-text {
+    font-size: 13px;
+    color: #999;
+    padding: 5px;
+  }
+  &-item {
+    cursor: pointer;
+    padding: 5px;
+    &:hover {
+      background: #eee;
+    }
+  }
+  &-create {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+      background: #eee;
+    }
+  }
+  &-create-name {
+    background: #eee;
+    border-radius: 5px;
+    margin-left: 5px;
+    padding: 0 5px;
+  }
+}

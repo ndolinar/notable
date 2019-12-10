@@ -1,0 +1,33 @@
+.category {
+  display: flex;
+  background: #ddd;
+  border-radius: 2px;
+  color: #666;
+  white-space: nowrap;
+  font-size: 14px;
+  margin-right: 6px;
+  &.nvm-has-x {
+    .category-name {
+      padding-right: 0;
+    }
+    .category-remove-button {
+      display: flex;
+    }
+  }
+  &-name {
+    padding: 2px 6px;
+  }
+  &-remove-button {
+    border: none;
+    outline: none;
+    background: transparent;
+    justify-content: center;
+    align-items: center;
+
+    display: none;
+    &:hover {
+      color: red;
+    }
+    cursor: pointer;
+  }
+}
