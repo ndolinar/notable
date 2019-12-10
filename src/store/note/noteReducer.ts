@@ -4,12 +4,12 @@ import { State } from '../rootReducer';
 import { ADD_NOTE_REQUEST, ADD_NOTE_SUCCESS } from './noteActions';
 const initialState: NoteState = {
   loading: false,
-  error: undefined,
+  error: null,
   status: '',
   note: {
     title: '',
     categories: [],
-    mood: 'happy',
+    mood: '',
     date: '',
     createdAt: '',
     modifiedAt: '',

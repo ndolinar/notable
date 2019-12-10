@@ -14,5 +14,5 @@ export const noteActions = {
   loadNote: (payload: Note) => createAction(LOAD_NOTE, payload),
   addNoteRequest: (payload: Note) => createAction(ADD_NOTE_REQUEST, payload),
   addNoteSuccess: (message: string) => createAction(ADD_NOTE_SUCCESS, message),
-  addNoteFailure: (errorMessage: string) => createAction(ADD_NOTE_FAILURE, errorMessage),
+  addNoteFailure: (error: string) => createAction(ADD_NOTE_FAILURE, error),
 };
