@@ -1,8 +1,13 @@
 import './index.scss';
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Category from './Category';
 import CategoriesDropdown from './Dropdown';
+import { State } from '../../../store/rootReducer';
+import { CategoryType } from '../../../store/categories/categoriesTypes';
+import { getCategories } from '../../../store/categories/categoriesReducer';
+import { categoriesActions } from '../../../store/categories/categoriesActions';
 import { classDecorator } from '../../../utils';
 
 const cn = classDecorator('categories');
@@ -12,27 +17,28 @@ const ARROW_UP = 'ArrowUp';
 const ENTER = 'Enter';
 const BACKSPACE = 'Backspace';
 
-interface CategoriesBoxProps {}
+interface CategoriesProps {
+  categories: CategoryType[];
+  createCategory: (category: CategoryType) => {};
+}
 
-interface CategoriesBoxState {
+interface CategoriesState {
   value: string;
   isActive: boolean;
-  categories: string[];
   selectedCategories: string[];
   activeDropdownItem: number | null;
 }
 
-export class CategoriesBox extends Component<CategoriesBoxProps, CategoriesBoxState> {
+export class Categories extends Component<CategoriesProps, CategoriesState> {
   private boxRef: React.RefObject<HTMLDivElement>;
   private inputRef: React.RefObject<HTMLInputElement>;
 
-  constructor(props: CategoriesBoxProps) {
+  constructor(props: CategoriesProps) {
     super(props);
 
     this.state = {
       value: '',
       isActive: false,
-      categories: ['work', 'fun', 'family'],
       selectedCategories: [],
       activeDropdownItem: null,
     };
@@ -89,7 +95,8 @@ export class CategoriesBox extends Component<CategoriesBoxProps, CategoriesBoxSt
 
   handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     const keyPressed = event.key;
-    const { value, categories, selectedCategories, activeDropdownItem } = this.state;
+    const { categories } = this.props;
+    const { value, selectedCategories, activeDropdownItem } = this.state;
     const valueTrimmed = value.trim();
 
     if (
@@ -165,6 +172,7 @@ export class CategoriesBox extends Component<CategoriesBoxProps, CategoriesBoxSt
   createCategory(name: string) {
     // @todo: api call
     // @todo: @temporary: create in redux
+    this.props.createCategory(name);
   }
 
   removeCategory(name: string) {
@@ -174,7 +182,8 @@ export class CategoriesBox extends Component<CategoriesBoxProps, CategoriesBoxSt
   }
 
   handleAddCategory(event: React.MouseEvent<HTMLDivElement, MouseEvent>, name: string) {
-    const { categories, selectedCategories } = this.state;
+    const { selectedCategories } = this.state;
+    const { categories } = this.props;
 
     if (categories.indexOf(name) === -1) {
       this.createCategory(name);
@@ -200,7 +209,8 @@ export class CategoriesBox extends Component<CategoriesBoxProps, CategoriesBoxSt
   }
 
   render() {
-    const { value, isActive, categories, selectedCategories, activeDropdownItem } = this.state;
+    const { categories } = this.props;
+    const { value, isActive, selectedCategories, activeDropdownItem } = this.state;
     const valueTrimmed = value.trim();
     const inputCn = cn('input') + (isActive ? '' : ' nvm-hidden');
     const categoriesContainerCn = cn('container') + (isActive ? '' : ' nvm-hidden');
@@ -251,4 +261,8 @@ export class CategoriesBox extends Component<CategoriesBoxProps, CategoriesBoxSt
   }
 }
 
-export default CategoriesBox;
+const mapStateToProps = (state: State) => ({ categories: getCategories(state) });
+const mapDispatchToProps = {
+  createCategory: (category: CategoryType) => categoriesActions.addCategoryRequest(category),
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Categories);
