@@ -1,0 +1,24 @@
+.create-button {
+  height: 40px;
+  font-size: 14px;
+  min-width: 80px;
+  border: 1px solid #eee;
+  line-height: 40px;
+  padding: 0 20px;
+  border-radius: 4px;
+  background: #5953fe;
+  background: #eee;
+  color: #666;
+  font-weight: 600;
+  cursor: pointer;
+  &:hover {
+    background: #e2e2e2;
+  }
+  &.secondary {
+    border: 1px solid #ddd;
+    background: #fff;
+    &:hover {
+      background: #fafafa;
+    }
+  }
+}
