@@ -1,6 +1,6 @@
 import './index.scss';
 
-import React, { Component } from 'react';
+import React, { Component, KeyboardEvent } from 'react';
 import { connect } from 'react-redux';
 import Category from './Category';
 import CategoriesDropdown from './Dropdown';
@@ -16,10 +16,13 @@ const ARROW_DOWN = 'ArrowDown';
 const ARROW_UP = 'ArrowUp';
 const ENTER = 'Enter';
 const BACKSPACE = 'Backspace';
+const TAB = 'Tab';
 
 interface CategoriesProps {
+  isActive: boolean;
   categories: CategoryType[];
   selectedCategories: CategoryType[];
+  setActive: (arg: boolean) => void;
   addCategory: (name: CategoryType) => void;
   removeCategory: (name: CategoryType) => void;
   createCategory: (category: CategoryType) => void;
@@ -27,7 +30,6 @@ interface CategoriesProps {
 
 interface CategoriesState {
   value: string;
-  isActive: boolean;
   activeDropdownItem: number | null;
 }
 
@@ -40,14 +42,12 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
 
     this.state = {
       value: '',
-      isActive: false,
       activeDropdownItem: null,
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleBoxBlur = this.handleBoxBlur.bind(this);
+
     this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.handleBoxFocus = this.handleBoxFocus.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.createCategory = this.createCategory.bind(this);
     this.handleAddCategory = this.handleAddCategory.bind(this);
@@ -61,17 +61,28 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
     document.addEventListener('mousedown', this.handleClickOutside, false);
   }
 
+  componentDidUpdate(prevProps: CategoriesProps) {
+    if (prevProps.isActive !== this.props.isActive) {
+      if (this.props.isActive) {
+        console.log('setting to input focus');
+        this.returnFocusToInput();
+      } else {
+        this.inputRef.current.blur();
+      }
+    }
+  }
+
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleClickOutside, false);
   }
 
   handleClickOutside(event: MouseEvent) {
-    const { isActive } = this.state;
+    const { isActive } = this.props;
     if (!isActive) return;
 
     if (this.boxRef && !this.boxRef.current.contains(event.target as Node)) {
+      this.props.setActive(false);
       this.setState({
-        isActive: false,
         value: '',
       });
     }
@@ -79,20 +90,15 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
 
   handleBoxClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.preventDefault();
-    this.setState({ isActive: true }, () => this.inputRef.current.focus());
+    this.props.setActive(true);
   };
-
-  handleBoxFocus() {
-    this.setState({ isActive: true }, () => this.inputRef.current.focus());
-  }
-
-  handleBoxBlur() {
-    // @todo: find a solution - blur on TAB key press - a11y
-    // this.setState({ isActive: false });
-  }
 
   handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     const keyPressed = event.key;
+    if (keyPressed === TAB) {
+      this.props.setActive(false);
+      return;
+    }
     const { categories } = this.props;
     const { value, activeDropdownItem } = this.state;
     const { selectedCategories } = this.props;
@@ -107,7 +113,7 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
       return;
     }
 
-    if (keyPressed === BACKSPACE && selectedCategories.length) {
+    if (keyPressed === BACKSPACE && !valueTrimmed && selectedCategories.length) {
       // Remove the last category from the field
       this.props.removeCategory(selectedCategories[selectedCategories.length - 1]);
     } else if (keyPressed === ENTER) {
@@ -169,7 +175,7 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
 
   handleAddCategory(event: React.MouseEvent<HTMLDivElement, MouseEvent>, name: string) {
     const { categories, selectedCategories } = this.props;
-
+    console.log('add cat');
     if (categories.indexOf(name) === -1) {
       this.createCategory(name);
     }
@@ -177,31 +183,48 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
     if (selectedCategories.indexOf(name) === -1) {
       this.props.addCategory(name);
     }
+
+    this.returnFocusToInput();
   }
+
+  returnFocusToInput = () => {
+    this.inputRef.current.focus();
+  };
 
   handleCreateCategory(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     const valueTrimmed = this.state.value.trim();
     this.createCategory(valueTrimmed);
     this.props.addCategory(valueTrimmed);
     this.setState({ value: '' });
+    this.returnFocusToInput();
   }
 
+  hf = (event: React.FocusEvent<HTMLInputElement>) => {
+    if (!this.props.isActive) {
+      this.props.setActive(true);
+    }
+    console.log('on focus');
+  };
+  hb = (event: React.FocusEvent<HTMLInputElement>) => {
+    console.log('on blur');
+    console.log('event.target: ', event.target);
+    this.props.setActive(false);
+  };
+
+  handleRemoveCategory = (catName: string) => {
+    this.props.removeCategory(catName);
+    this.returnFocusToInput();
+  };
+
   render() {
-    const { categories, selectedCategories } = this.props;
-    const { value, isActive, activeDropdownItem } = this.state;
+    const { categories, isActive, selectedCategories } = this.props;
+    const { value, activeDropdownItem } = this.state;
     const valueTrimmed = value.trim();
-    const inputCn = cn('input') + (isActive ? '' : ' nvm-hidden');
+    const inputCn = cn('input'); //+ (isActive ? '' : ' nvm-hidden')
     const categoriesContainerCn = cn('container') + (isActive ? '' : ' nvm-hidden');
 
     return (
-      <div
-        tabIndex={0}
-        className={cn()}
-        ref={this.boxRef}
-        onClick={this.handleBoxClick}
-        onFocus={this.handleBoxFocus}
-        onBlur={this.handleBoxBlur}
-      >
+      <div className={cn()} ref={this.boxRef} onClick={this.handleBoxClick}>
         <div className={cn('wrap')}>
           <div className={categoriesContainerCn}>
             {!selectedCategories.length && !isActive && (
@@ -212,7 +235,7 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
                 key={catName}
                 name={catName}
                 shouldShowX={isActive}
-                onRemove={() => this.props.removeCategory(catName)}
+                onRemove={() => this.handleRemoveCategory(catName)}
               />
             ))}
           </div>
@@ -222,6 +245,8 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
             onKeyDown={this.handleKeyDown}
             onChange={this.handleChange}
             value={value}
+            onFocus={this.hf}
+            // onBlur={this.hb}
             type="text"
           />
         </div>

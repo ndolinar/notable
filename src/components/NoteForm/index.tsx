@@ -12,9 +12,9 @@ import { NoteType } from '../../store/note/noteTypes';
 import { State } from '../../store/rootReducer';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-const cn = classDecorator('note');
+const cn = classDecorator('note-form');
 
-interface NoteProps extends RouteComponentProps {
+interface NoteFormProps extends RouteComponentProps {
   id: number;
   incrementId: () => void;
   createNoteRequest: (note: NoteType) => void;
@@ -24,18 +24,20 @@ interface LooseObject {
   [key: string]: any;
 }
 
-interface NoteState {
+interface NoteFormState {
   title: string;
   errors: LooseObject;
+  isDropdownActive: boolean;
   selectedCategories: CategoryType[];
 }
 
-class Note extends React.Component<NoteProps, NoteState> {
-  constructor(props: NoteProps) {
+class NoteForm extends React.Component<NoteFormProps, NoteFormState> {
+  constructor(props: NoteFormProps) {
     super(props);
 
     this.state = {
       title: '',
+      isDropdownActive: false,
       errors: {},
       selectedCategories: [],
     };
@@ -45,6 +47,8 @@ class Note extends React.Component<NoteProps, NoteState> {
     this.addCategory = this.addCategory.bind(this);
     this.removeCategory = this.removeCategory.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.setDropdownActive = this.setDropdownActive.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   addCategory(name: string) {
@@ -59,6 +63,12 @@ class Note extends React.Component<NoteProps, NoteState> {
     });
   }
 
+  setDropdownActive(isActive: boolean) {
+    this.setState({
+      isDropdownActive: isActive,
+    });
+  }
+
   handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const errors = { ...this.state.errors };
     delete errors.title;
@@ -68,7 +78,7 @@ class Note extends React.Component<NoteProps, NoteState> {
 
   handleSave() {
     const errors: LooseObject = {};
-    const { id } = this.props;
+    const { id, history } = this.props;
     const { title, selectedCategories } = this.state;
 
     if (!title) {
@@ -87,6 +97,16 @@ class Note extends React.Component<NoteProps, NoteState> {
 
     this.props.incrementId();
     this.props.createNoteRequest(note);
+    history.push('/');
+  }
+
+  handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    if (this.state.isDropdownActive) {
+      return;
+    }
+
+    this.handleSave();
   }
 
   handleCancel() {
@@ -95,29 +115,29 @@ class Note extends React.Component<NoteProps, NoteState> {
   }
 
   render() {
-    const { title, errors, selectedCategories } = this.state;
+    const { title, errors, selectedCategories, isDropdownActive } = this.state;
 
     return (
-      <div className={cn()}>
+      <form className={cn()} onSubmit={this.handleSubmit}>
         <div className={cn('section')}>
           <TitleField value={title} error={errors.title} onChange={this.handleTitleChange} />
         </div>
         <div className={cn('section')}>
           <Categories
+            isActive={isDropdownActive}
+            setActive={this.setDropdownActive}
             selectedCategories={selectedCategories}
             addCategory={this.addCategory}
             removeCategory={this.removeCategory}
           />
         </div>
         <div className={cn('controls')}>
-          <PrimaryButton buttonType="secondary" onClick={this.handleCancel}>
-            Cancel
-          </PrimaryButton>
-          <PrimaryButton mousedownInteraction onClick={this.handleSave}>
+          <PrimaryButton onClick={this.handleCancel}>Cancel</PrimaryButton>
+          <PrimaryButton onMouseDown={this.handleSave} onSubmit={this.handleSubmit}>
             Save
           </PrimaryButton>
         </div>
-      </div>
+      </form>
     );
   }
 }
@@ -131,4 +151,4 @@ const mapDispatchToProps = {
   incrementId: () => noteActions.incrementId(),
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Note));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NoteForm));

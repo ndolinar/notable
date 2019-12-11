@@ -1,5 +1,5 @@
 import React from 'react';
-import Note from '../components/Note';
+import NoteForm from '../components/NoteForm';
 import { classDecorator } from '../utils';
 
 const cn = classDecorator('page');
@@ -8,7 +8,7 @@ export const CreatePage = () => {
   return (
     <div className={cn()}>
       <div className={cn('main')}>
-        <Note />
+        <NoteForm />
       </div>
     </div>
   );
