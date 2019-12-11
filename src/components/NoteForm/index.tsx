@@ -133,7 +133,7 @@ class NoteForm extends React.Component<NoteFormProps, NoteFormState> {
         </div>
         <div className={cn('controls')}>
           <PrimaryButton onClick={this.handleCancel}>Cancel</PrimaryButton>
-          <PrimaryButton onMouseDown={this.handleSave} onSubmit={this.handleSubmit}>
+          <PrimaryButton mouseDown onClick={this.handleSave} onSubmit={this.handleSubmit}>
             Save
           </PrimaryButton>
         </div>
