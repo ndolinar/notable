@@ -19,13 +19,15 @@ const BACKSPACE = 'Backspace';
 
 interface CategoriesProps {
   categories: CategoryType[];
-  createCategory: (category: CategoryType) => {};
+  selectedCategories: CategoryType[];
+  addCategory: (name: CategoryType) => void;
+  removeCategory: (name: CategoryType) => void;
+  createCategory: (category: CategoryType) => void;
 }
 
 interface CategoriesState {
   value: string;
   isActive: boolean;
-  selectedCategories: string[];
   activeDropdownItem: number | null;
 }
 
@@ -39,7 +41,6 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
     this.state = {
       value: '',
       isActive: false,
-      selectedCategories: [],
       activeDropdownItem: null,
     };
 
@@ -48,11 +49,8 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleBoxFocus = this.handleBoxFocus.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
-    this.addCategory = this.addCategory.bind(this);
-    this.removeCategory = this.removeCategory.bind(this);
     this.createCategory = this.createCategory.bind(this);
     this.handleAddCategory = this.handleAddCategory.bind(this);
-    this.handleRemoveCategory = this.handleRemoveCategory.bind(this);
     this.handleCreateCategory = this.handleCreateCategory.bind(this);
 
     this.boxRef = React.createRef();
@@ -96,7 +94,8 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
   handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     const keyPressed = event.key;
     const { categories } = this.props;
-    const { value, selectedCategories, activeDropdownItem } = this.state;
+    const { value, activeDropdownItem } = this.state;
+    const { selectedCategories } = this.props;
     const valueTrimmed = value.trim();
 
     if (
@@ -110,8 +109,7 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
 
     if (keyPressed === BACKSPACE && selectedCategories.length) {
       // Remove the last category from the field
-      const { selectedCategories } = this.state;
-      this.removeCategory(selectedCategories[selectedCategories.length - 1]);
+      this.props.removeCategory(selectedCategories[selectedCategories.length - 1]);
     } else if (keyPressed === ENTER) {
       const categoryName = valueTrimmed ? valueTrimmed : categories[activeDropdownItem];
       if (!categoryName) {
@@ -125,7 +123,7 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
         this.createCategory(categoryName);
       }
       if (!selectedCategory) {
-        this.addCategory(categoryName);
+        this.props.addCategory(categoryName);
       }
 
       this.setState({
@@ -163,54 +161,34 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
     });
   }
 
-  addCategory(name: string) {
-    this.setState({
-      selectedCategories: [...this.state.selectedCategories, name],
-    });
-  }
-
   createCategory(name: string) {
     // @todo: api call
     // @todo: @temporary: create in redux
     this.props.createCategory(name);
   }
 
-  removeCategory(name: string) {
-    this.setState({
-      selectedCategories: [...this.state.selectedCategories.filter(catName => catName !== name)],
-    });
-  }
-
   handleAddCategory(event: React.MouseEvent<HTMLDivElement, MouseEvent>, name: string) {
-    const { selectedCategories } = this.state;
-    const { categories } = this.props;
+    const { categories, selectedCategories } = this.props;
 
     if (categories.indexOf(name) === -1) {
       this.createCategory(name);
     }
 
     if (selectedCategories.indexOf(name) === -1) {
-      this.addCategory(name);
+      this.props.addCategory(name);
     }
   }
 
   handleCreateCategory(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     const valueTrimmed = this.state.value.trim();
     this.createCategory(valueTrimmed);
-    this.addCategory(valueTrimmed);
+    this.props.addCategory(valueTrimmed);
     this.setState({ value: '' });
   }
 
-  handleRemoveCategory(event: React.MouseEvent<HTMLButtonElement, MouseEvent>, name: string) {
-    const { selectedCategories } = this.state;
-    this.setState({
-      selectedCategories: selectedCategories.filter(catName => catName !== name),
-    });
-  }
-
   render() {
-    const { categories } = this.props;
-    const { value, isActive, selectedCategories, activeDropdownItem } = this.state;
+    const { categories, selectedCategories } = this.props;
+    const { value, isActive, activeDropdownItem } = this.state;
     const valueTrimmed = value.trim();
     const inputCn = cn('input') + (isActive ? '' : ' nvm-hidden');
     const categoriesContainerCn = cn('container') + (isActive ? '' : ' nvm-hidden');
@@ -234,7 +212,7 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
                 key={catName}
                 name={catName}
                 shouldShowX={isActive}
-                onRemove={e => this.handleRemoveCategory(e, catName)}
+                onRemove={() => this.props.removeCategory(catName)}
               />
             ))}
           </div>
@@ -261,8 +239,12 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
   }
 }
 
-const mapStateToProps = (state: State) => ({ categories: getCategories(state) });
+const mapStateToProps = (state: State) => ({
+  categories: getCategories(state),
+});
+
 const mapDispatchToProps = {
   createCategory: (category: CategoryType) => categoriesActions.addCategoryRequest(category),
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(Categories);
