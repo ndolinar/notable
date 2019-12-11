@@ -1,4 +1,5 @@
 import { all, take, select, fork } from 'redux-saga/effects';
+import noteSaga from './note/noteSaga';
 
 function* watchAndLog() {
   while (true) {
@@ -12,7 +13,7 @@ function* watchAndLog() {
 }
 
 function* rootSaga() {
-  yield all([watchAndLog()]);
+  yield all([watchAndLog(), noteSaga()]);
 }
 
 export default rootSaga;

@@ -1,29 +1,37 @@
-import { Reducer, AnyAction } from 'redux';
-import { NoteState } from './noteTypes';
+import { ADD_NOTE, REMOVE_NOTE, INCREMENT_ID } from './noteActions';
+import { NoteState } from '../note/noteTypes';
+import { AnyAction } from 'redux';
 import { State } from '../rootReducer';
-import { ADD_NOTE_REQUEST, ADD_NOTE_SUCCESS } from './noteActions';
+
 const initialState: NoteState = {
+  id: 0,
   loading: false,
   error: null,
   status: '',
-  note: {
-    title: '',
-    categories: [],
-    mood: '',
-    date: '',
-    createdAt: '',
-    modifiedAt: '',
-  },
+  notes: [],
 };
 
-const noteReducer: Reducer<NoteState> = (state: NoteState = initialState, action: AnyAction) => {
+const noteReducer = (state: NoteState = initialState, action: AnyAction) => {
   switch (action.type) {
-    // @todo: api
-    case ADD_NOTE_REQUEST: {
-      return state;
+    case ADD_NOTE: {
+      const newArr = [...state.notes, action.payload];
+      console.log('new notes: ', newArr);
+      return {
+        ...state,
+        notes: [...state.notes, action.payload],
+      };
     }
-    case ADD_NOTE_SUCCESS: {
-      return state;
+    case INCREMENT_ID: {
+      return {
+        ...state,
+        id: state.id + 1,
+      };
+    }
+    case REMOVE_NOTE: {
+      return {
+        ...state,
+        notes: state.notes.filter(note => note.id !== action.payload.id),
+      };
     }
     default: {
       return state;
@@ -31,7 +39,6 @@ const noteReducer: Reducer<NoteState> = (state: NoteState = initialState, action
   }
 };
 
-export const getNoteState = (state: State) => state.note;
-export const getNote = (state: State) => state.note.note;
+export const getNotes = (state: State) => state.note.notes;
 
 export default noteReducer;

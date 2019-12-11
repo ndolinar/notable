@@ -7,7 +7,7 @@ const initialState: CategoriesState = {
   loading: false,
   error: null,
   status: '',
-  categories: ['work', 'fun'],
+  categories: [],
 };
 
 const categoriesReducer: Reducer<CategoriesState> = (

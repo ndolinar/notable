@@ -1,15 +1,19 @@
-export interface Note {
+import { CategoryType } from '../categories/categoriesTypes';
+
+export interface NoteType {
+  id: number;
   title: string;
-  categories: string[];
+  categories: CategoryType[];
   mood: string;
-  date: string;
-  createdAt: string; // @todo: Do I need to send this when updating?
-  modifiedAt: string; // @todo: Do I need to send this when updating?
+  date: Date;
+  createdAt?: Date; // @todo: Do I need to send this when updating?
+  modifiedAt?: Date; // @todo: Do I need to send this when updating?
 }
 
 export interface NoteState {
+  id: number;
   loading: boolean;
   error: string | null;
   status: string;
-  note: Note;
+  notes: NoteType[];
 }
