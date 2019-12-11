@@ -9,8 +9,9 @@ type ButtonType = 'primary' | 'secondary';
 interface Props {
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   onMouseDown?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onSubmit?: (event: React.FormEvent<HTMLButtonElement>) => void;
   children: string;
-  isSubmit?: boolean;
+
   buttonType?: ButtonType;
   mousedownInteraction?: boolean;
 }
@@ -19,22 +20,18 @@ export const PrimaryButton: React.FC<Props> = ({
   buttonType,
   onClick,
   children,
-  isSubmit,
+  onSubmit,
   mousedownInteraction,
 }) => {
-  const stopEvent = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    onClick(e);
-  };
-
   const classNames = cn('', buttonType || '');
 
   return (
     <button
       {...{
         className: classNames,
-        type: isSubmit ? 'submit' : 'button',
+        type: onSubmit ? 'submit' : 'button',
         ...(mousedownInteraction ? { onMouseDown: onClick } : { onClick }),
+        ...(onSubmit ? { onSubmit } : {}),
       }}
     >
       {children}
