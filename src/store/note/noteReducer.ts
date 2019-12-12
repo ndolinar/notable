@@ -8,7 +8,9 @@ const initialState: NoteState = {
   loading: false,
   error: null,
   status: '',
-  notes: [],
+  notes: [
+    { id: 1, title: 'Sample note', categories: ['work', 'fun'], mood: 'neutral', date: new Date() },
+  ],
 };
 
 const noteReducer = (state: NoteState = initialState, action: AnyAction) => {

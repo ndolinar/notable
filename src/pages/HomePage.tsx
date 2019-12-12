@@ -6,7 +6,7 @@ const cn = classDecorator('page');
 
 export const HomePage = () => {
   return (
-    <div className={cn()}>
+    <div className={cn('', 'is-account')}>
       <div className={cn('main')}>
         <h1>Home</h1>
         <Notes />

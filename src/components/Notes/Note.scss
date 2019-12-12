@@ -1,5 +1,58 @@
 .notes-note {
-  &-date {
+  width: 33.33333333%;
+  padding: 5px;
+  @media (max-width: 780px) {
+    width: 50%;
+  }
+  @media (max-width: 580px) {
+    width: 100%;
+  }
+  &-wrap {
+    display: flex;
+    border-radius: 8px;
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 15px;
+    height: 100%;
+  }
+  &-body {
+    display: flex;
+    flex-direction: column;
+  }
+  &-title {
+    font-weight: 600;
+    color: #666;
+    padding-bottom: 10px;
+    margin-bottom: auto;
+  }
+
+  &-content {
+    display: flex;
+    justify-content: space-between;
     color: #999;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  &-actions {
+    margin-left: auto;
+    display: flex;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-right: -10px;
+    margin-top: -5px;
+    margin-bottom: -5px;
+    button {
+      margin-left: 5px;
+      background: none;
+      // background: #fafafa;
+      cursor: pointer;
+      border: none;
+      color: #666;
+      i.fa {
+        font-size: 20px;
+      }
+    }
   }
 }

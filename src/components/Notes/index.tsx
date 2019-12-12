@@ -1,3 +1,5 @@
+import './index.scss';
+
 import React from 'react';
 import { connect } from 'react-redux';
 import { State } from '../../store/rootReducer';

@@ -12,8 +12,9 @@ import { NoteType } from '../../store/note/noteTypes';
 import { State } from '../../store/rootReducer';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { DateField } from './DateField';
-import Moods from './Moods';
+import Moods, { Mood } from './Moods';
 import { Button } from '../Buttons/Button';
+import { dateSetter, dateValuesFormatter } from '../../utils/dateExtractor';
 
 const cn = classDecorator('note-form');
 
@@ -42,7 +43,7 @@ interface NoteFormState {
   errors: LooseObject;
   isDropdownActive: boolean;
   selectedCategories: CategoryType[];
-  mood: string | null;
+  mood: Mood | null;
 }
 
 class NoteForm extends React.Component<NoteFormProps, NoteFormState> {
@@ -72,31 +73,16 @@ class NoteForm extends React.Component<NoteFormProps, NoteFormState> {
 
   handleBody() {}
 
-  handleMood(mood: string) {
+  handleMood(mood: Mood) {
     this.setState({ mood });
   }
 
   handleDateChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-
-    let numVal = value && parseInt(value.replace(/\D/gm, ''));
-
-    if (name === 'day') {
-      numVal = numVal === 0 ? 1 : numVal > 31 ? 31 : numVal;
-    } else if (name === 'month') {
-      numVal = numVal === 0 ? 1 : numVal > 12 ? 12 : numVal;
-    } else if (name === 'year') {
-      numVal = numVal > 50000 ? 2019 : numVal;
-    } else if (name === 'hours') {
-      numVal = numVal > 24 ? 24 : numVal;
-    } else if (name === 'minutes') {
-      numVal = numVal > 59 ? 59 : numVal;
-    }
-
-    const val = numVal.toString();
+    const formattedValue = dateValuesFormatter(name, value);
 
     this.setState({
-      date: { ...this.state.date, [name]: val },
+      date: { ...this.state.date, [name]: formattedValue },
     });
   }
 
@@ -127,7 +113,7 @@ class NoteForm extends React.Component<NoteFormProps, NoteFormState> {
   handleSave() {
     const errors: LooseObject = {};
     const { id, history } = this.props;
-    const { title, selectedCategories } = this.state;
+    const { title, selectedCategories, date } = this.state;
 
     if (!title) {
       errors.title = 'Cannot be left empty.';
@@ -140,7 +126,7 @@ class NoteForm extends React.Component<NoteFormProps, NoteFormState> {
       title,
       categories: selectedCategories,
       mood: 'neutral',
-      date: new Date(),
+      date: dateSetter(date),
     };
 
     this.props.incrementId();
@@ -162,7 +148,7 @@ class NoteForm extends React.Component<NoteFormProps, NoteFormState> {
   }
 
   render() {
-    const { title, date, errors, selectedCategories, isDropdownActive } = this.state;
+    const { title, date, mood, errors, selectedCategories, isDropdownActive } = this.state;
 
     return (
       <form className={cn()} onSubmit={this.handleSubmit}>
@@ -193,10 +179,10 @@ class NoteForm extends React.Component<NoteFormProps, NoteFormState> {
             <i className="fa fa-cloud"></i>
           </div>
           <div className={cn('section-content')}>
-            <Moods onClick={this.handleMood} />
+            <Moods activeMood={mood} onClick={this.handleMood} />
           </div>
         </div>
-        <div className={cn('section')}>
+        <div className={cn('section', 'nvm-shorter')}>
           <div className={cn('section-title')}>
             <i className="fa fa-calendar"></i>
           </div>
