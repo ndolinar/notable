@@ -6,7 +6,7 @@ const cn = classDecorator('page');
 
 export const CreatePage = () => {
   return (
-    <div className={cn()}>
+    <div className={cn('', 'is-create')}>
       <div className={cn('main')}>
         <NoteForm />
       </div>

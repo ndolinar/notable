@@ -220,15 +220,15 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
     const { categories, isActive, selectedCategories } = this.props;
     const { value, activeDropdownItem } = this.state;
     const valueTrimmed = value.trim();
-    const inputCn = cn('input'); //+ (isActive ? '' : ' nvm-hidden')
+    const inputCn = cn('input');
     const categoriesContainerCn = cn('container') + (isActive ? '' : ' nvm-hidden');
 
     return (
       <div className={cn()} ref={this.boxRef} onClick={this.handleBoxClick}>
-        <div className={cn('wrap')}>
+        <div className={cn('wrap', isActive ? 'nvm-active' : '')}>
           <div className={categoriesContainerCn}>
             {!selectedCategories.length && !isActive && (
-              <span className={cn('placeholder')}>Start typing to add categories...</span>
+              <span className={cn('placeholder')}>Select categories</span>
             )}
             {selectedCategories.map((catName: string) => (
               <Category
@@ -238,17 +238,17 @@ export class Categories extends Component<CategoriesProps, CategoriesState> {
                 onRemove={() => this.handleRemoveCategory(catName)}
               />
             ))}
+            <input
+              ref={this.inputRef}
+              className={inputCn}
+              onKeyDown={this.handleKeyDown}
+              onChange={this.handleChange}
+              value={value}
+              onFocus={this.hf}
+              // onBlur={this.hb}
+              type="text"
+            />
           </div>
-          <input
-            ref={this.inputRef}
-            className={inputCn}
-            onKeyDown={this.handleKeyDown}
-            onChange={this.handleChange}
-            value={value}
-            onFocus={this.hf}
-            // onBlur={this.hb}
-            type="text"
-          />
         </div>
         {isActive && (
           <CategoriesDropdown

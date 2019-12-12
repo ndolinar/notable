@@ -1,5 +1,10 @@
 .page {
   flex: 1;
+  &.is-create {
+    max-width: 700px;
+    margin: 0 auto;
+    padding-top: 70px;
+  }
 
   &.is-account {
     background: #fafafa;

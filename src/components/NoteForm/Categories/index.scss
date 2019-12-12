@@ -1,18 +1,17 @@
 .categories {
   min-width: 320px;
   max-width: calc(100vw - 24px);
+  position: relative;
   &-wrap {
     display: flex;
     min-height: 40px;
     border: 1px solid #ddd;
-    padding: 0 10px;
     align-items: center;
     border-radius: 4px;
     &:hover,
     &.nvm-active {
       background: #fafafa;
     }
-
     &.nvm-disabled {
       cursor: pointer;
     }
@@ -20,6 +19,8 @@
   &-container {
     display: flex;
     flex-wrap: wrap;
+    padding: 5px;
+    padding-bottom: 0;
     &.nvm-disabled {
       pointer-events: none;
     }
@@ -28,6 +29,8 @@
     color: #999;
     font-size: 16px;
     display: flex;
+    padding-left: 5px;
+    padding-bottom: 5px;
     align-items: center;
   }
   &-input {
@@ -35,9 +38,13 @@
     border: none;
     background: transparent;
     outline: none;
-    font-size: 14px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    font-size: 16px;
     display: flex;
+    width: auto;
     cursor: pointer;
+    min-width: 60px;
     opacity: 1;
     &.nvm-hidden {
       opacity: 0;

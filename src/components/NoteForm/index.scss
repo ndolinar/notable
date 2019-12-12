@@ -1,6 +1,26 @@
 .note-form {
+  width: 100%;
   &-section {
     margin-bottom: 20px;
+    display: flex;
+    width: 100%;
+  }
+  &-section-title {
+    padding-right: 20px;
+    display: flex;
+    justify-content: center;
+    max-height: 40px;
+    align-items: center;
+    i.fa {
+      font-size: 20px;
+      color: #666;
+    }
+    span i.fa {
+      color: #5953fe;
+    }
+  }
+  &-section-content {
+    flex: 1;
   }
   &-controls {
     display: flex;
@@ -8,5 +28,20 @@
     button {
       margin-right: 10px;
     }
+  }
+  &-editable {
+    min-height: 40px;
+    border: 1px solid #ddd;
+    width: 100%;
+    outline: none;
+    padding: 5px;
+    border-radius: 4px;
+    &:focus {
+      box-shadow: 0 0 0 0.25rem #c4e7ff;
+      z-index: 1;
+    }
+  }
+  &-add-body-button {
+    margin-left: -20px;
   }
 }

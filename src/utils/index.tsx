@@ -1,3 +1,3 @@
 import classDecorator from './classDecorator';
-
-export { classDecorator };
+import dateExtractor from './dateExtractor';
+export { classDecorator, dateExtractor };

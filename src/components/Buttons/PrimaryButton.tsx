@@ -13,7 +13,7 @@ interface Props {
   children: string;
 
   buttonType?: ButtonType;
-  mousedownInteraction?: boolean;
+  mouseDown?: boolean;
 }
 
 export const PrimaryButton: React.FC<Props> = ({
@@ -21,7 +21,7 @@ export const PrimaryButton: React.FC<Props> = ({
   onClick,
   children,
   onSubmit,
-  mousedownInteraction,
+  mouseDown,
 }) => {
   const classNames = cn('', buttonType || '');
 
@@ -30,7 +30,7 @@ export const PrimaryButton: React.FC<Props> = ({
       {...{
         className: classNames,
         type: onSubmit ? 'submit' : 'button',
-        ...(mousedownInteraction ? { onMouseDown: onClick } : { onClick }),
+        ...(mouseDown ? { onMouseDown: onClick } : { onClick }),
         ...(onSubmit ? { onSubmit } : {}),
       }}
     >
